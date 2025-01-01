@@ -99,7 +99,9 @@
         &trans        &trans          &trans          &trans              &macro_vim_save                  &trans                             &trans                             &trans                             &trans           &trans
             >;
 
-            sensor-bindings = <&inc_dec_kp C_NEXT C_PREVIOUS>;
+            sensor-bindings =
+                <&inc_dec_kp C_NEXT C_PREVIOUS>,
+                <&inc_dec_kp 0 0>;
         };
 
         NUMBERS {
@@ -132,16 +134,6 @@
             >;
 
             sensor-bindings = <&inc_dec_kp RIGHT LEFT>;
-        };
-
-        layer_4 {
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                         &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                         &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans                         &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &kp BACKSPACE  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-        &trans  &trans  &trans  &trans  &trans                         &trans  &trans  &trans  &trans  &trans
-            >;
         };
     };
 };
