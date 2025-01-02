@@ -85,19 +85,16 @@
         layer1 {
             bindings = <&tog 1>;
             key-positions = <37 1>;
-            layers = <0>;
         };
 
         layer2 {
             bindings = <&tog 2>;
             key-positions = <37 2>;
-            layers = <0>;
         };
 
         layer3 {
             bindings = <&tog 3>;
             key-positions = <37 3>;
-            layers = <0>;
         };
     };
 
