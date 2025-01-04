@@ -108,7 +108,57 @@
 
         layer4 {
             bindings = <&tog 4>;
-            key-positions = <37 4>;
+            key-positions = <4 45>;
+        };
+
+        f1 {
+            bindings = <&kp LA(F1)>;
+            key-positions = <1 45>;
+        };
+
+        f2 {
+            bindings = <&kp LA(F2)>;
+            key-positions = <2 45>;
+        };
+
+        f3 {
+            bindings = <&kp LA(F3)>;
+            key-positions = <3 45>;
+        };
+
+        f4 {
+            bindings = <&kp LA(F4)>;
+            key-positions = <4 45>;
+        };
+
+        f5 {
+            bindings = <&kp LA(F5)>;
+            key-positions = <5 45>;
+        };
+
+        f6 {
+            bindings = <&kp LA(F6)>;
+            key-positions = <6 45>;
+        };
+
+        f7 {
+            bindings = <&kp LA(F7)>;
+            key-positions = <7 45>;
+        };
+
+        f8 {
+            bindings = <&kp LA(F8)>;
+            key-positions = <7 45>;
+        };
+
+        f9 {
+            bindings = <&kp LA(F9)>;
+            key-positions = <9 45>;
+        };
+
+        f10 {
+            bindings = <&kp LA(F10)>;
+            key-positions = <10 45>;
         };
     };
 
