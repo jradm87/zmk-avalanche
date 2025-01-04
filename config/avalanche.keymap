@@ -161,7 +161,7 @@
             key-positions = <10 45>;
         };
 
-        f11 {
+        af11 {
             bindings = <&kp LA(F11)>;
             key-positions = <45 11>;
         };
