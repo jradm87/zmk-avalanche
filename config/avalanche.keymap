@@ -86,6 +86,13 @@
             bindings = <&none>;
             label = "ACCENTE";
         };
+
+        p1: p1 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(C) &kp AT_SIGN &kp LS(R) &kp L>;
+            label = "P1";
+        };
     };
 
     combos {
@@ -297,11 +304,11 @@
 
         mouse {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans          &trans          &trans           &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans          &trans          &trans           &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans          &trans           &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK        &trans  &trans  &trans  &trans  &trans
-        &trans  &trans  &trans  &trans  &trans                  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans               &trans          &trans          &trans           &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans               &trans          &trans          &trans           &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans                       &trans          &trans           &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &p1  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK        &trans  &trans  &trans  &trans  &trans
+        &trans  &trans  &trans  &trans  &trans               &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &trans  &trans
             >;
         };
     };
