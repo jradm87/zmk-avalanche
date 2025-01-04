@@ -93,17 +93,17 @@
 
         layer1 {
             bindings = <&tog 1>;
-            key-positions = <37 1>;
+            key-positions = <1 45>;
         };
 
         layer2 {
             bindings = <&tog 2>;
-            key-positions = <37 2>;
+            key-positions = <2 45>;
         };
 
         layer3 {
             bindings = <&tog 3>;
-            key-positions = <37 3>;
+            key-positions = <3 45>;
         };
 
         layer4 {
