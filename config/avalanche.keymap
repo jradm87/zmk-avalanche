@@ -107,22 +107,22 @@
 
         layer1 {
             bindings = <&tog 1>;
-            key-positions = <1 45>;
+            key-positions = <1 47>;
         };
 
         layer2 {
             bindings = <&tog 2>;
-            key-positions = <2 45>;
+            key-positions = <2 47>;
         };
 
         layer3 {
             bindings = <&tog 3>;
-            key-positions = <3 45>;
+            key-positions = <3 47>;
         };
 
         layer4 {
             bindings = <&tog 4>;
-            key-positions = <4 45>;
+            key-positions = <4 47>;
         };
 
         af1 {
@@ -243,6 +243,11 @@
         f12 {
             bindings = <&kp F12>;
             key-positions = <58 23>;
+        };
+
+        cedilla {
+            bindings = <&kp C>;
+            key-positions = <55 41>;
         };
     };
 
