@@ -90,8 +90,15 @@
         p1: p1 {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LS(C) &kp AT_SIGN &kp LS(R) &kp L>;
+            bindings = <&kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp E &kp W &kp Q>;
             label = "P1";
+        };
+
+        p2: p2 {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&none &kp E &kp W &kp Q &kp I &kp O &kp P>;
+            label = "P2";
         };
     };
 
@@ -307,7 +314,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans               &trans          &trans          &trans           &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans               &trans          &trans          &trans           &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans                       &trans          &trans           &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &p1  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK        &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &p2     &p1  &mkp LCLK       &mmv MOVE_UP    &mkp RCLK        &trans  &trans  &trans  &trans  &trans
         &trans  &trans  &trans  &trans  &trans               &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &trans  &trans
             >;
         };
