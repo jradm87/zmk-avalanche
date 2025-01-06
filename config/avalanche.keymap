@@ -185,68 +185,6 @@
             key-positions = <23 47>;
         };
 
-        f1 {
-            bindings = <&kp F1>;
-            key-positions = <1 58>;
-        };
-
-        f2 {
-            bindings = <&kp F2>;
-            key-positions = <58 2>;
-        };
-
-        f3 {
-            bindings = <&kp F3>;
-            key-positions = <58 3>;
-        };
-
-        f4 {
-            bindings = <&kp F4>;
-            key-positions = <58 4>;
-        };
-
-        f5 {
-            bindings = <&kp F5>;
-            key-positions = <58 5>;
-        };
-
-        f6 {
-            bindings = <&kp F6>;
-            key-positions = <58 6>;
-        };
-
-        f7 {
-            bindings = <&kp F7>;
-            key-positions = <58 7>;
-        };
-
-        f8 {
-            bindings = <&kp F8>;
-            key-positions = <58 8>;
-        };
-
-        f9 {
-            bindings = <&kp F9>;
-            key-positions = <58 9>;
-        };
-
-        f10 {
-            bindings = <&kp F10>;
-            key-positions = <58 10>;
-        };
-
-        f11 {
-            bindings = <&kp F11>;
-            key-positions = <58 11>;
-            layers = <0>;
-        };
-
-        f12 {
-            bindings = <&kp F12>;
-            key-positions = <58 23>;
-            layers = <0>;
-        };
-
         cedilla {
             bindings = <&kp A>;
             key-positions = <55 41>;
@@ -266,11 +204,11 @@
             // ---------------------------------------------------------------------------------------------------------------------------------------------
 
             bindings = <
-&kp ESCAPE        &kp N1        &kp N2    &kp N3     &kp N4      &kp N5                           &kp N6          &kp N7          &kp N8           &kp N9           &kp N0         &kp BACKSPACE
-&kp TAB           &kp Q         &kp W     &kp E      &kp R       &kp T                            &kp Y           &kp U           &kp I            &kp O            &kp P          &kp MINUS
-&kp LEFT_SHIFT    &kp CAPSLOCK  &kp A     &kp S      &kp D       &kp F      &kp G                                 &kp H           &kp J            &kp K            &kp L          &kp SEMICOLON  &kp SINGLE_QUOTE  &kp EQUAL
-&kp LEFT_CONTROL  &kp Z         &kp X     &kp C      &kp V       &kp B      &kp DELETE  &kp HOME  &kp RS(END)     &kp UP_ARROW    &kp N            &kp M            &kp COMMA      &kp PERIOD     &kp SLASH         &kp PRINTSCREEN
-                  &kp LEFT_ALT  &kp LWIN  &kp SPACE  &kp INSERT  &kp ENTER                        &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp RIGHT_ARROW  &kp RIGHT_ALT
+&kp ESCAPE        &kp N1        &kp N2    &kp N3     &kp N4      &kp N5                           &kp N6          &kp N7          &kp N8           &kp N9     &kp N0     &kp BACKSPACE
+&kp TAB           &kp Q         &kp W     &kp E      &kp R       &kp T                            &kp Y           &kp U           &kp I            &kp O      &kp P      &kp MINUS
+&kp LEFT_SHIFT    &kp CAPSLOCK  &kp A     &kp S      &kp D       &kp F      &kp G                                 &kp H           &kp J            &kp K      &kp L      &kp SEMICOLON  &kp SINGLE_QUOTE  &kp EQUAL
+&kp LEFT_CONTROL  &kp Z         &kp X     &kp C      &kp V       &kp B      &kp DELETE  &kp HOME  &kp RS(END)     &kp UP_ARROW    &kp N            &kp M      &kp COMMA  &kp PERIOD     &kp SLASH         &kp PRINTSCREEN
+                  &kp LEFT_ALT  &kp LWIN  &kp SPACE  &kp INSERT  &kp ENTER                        &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp SPACE  &tog 1
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>;
@@ -282,7 +220,7 @@
 &trans      &kp HOME      &kp UP_ARROW    &kp END         &macro_vim_replace  &trans                           &rgb_ug RGB_COLOR_HSB(0,100,50)    &rgb_ug RGB_COLOR_HSB(182,100,50)  &rgb_ug RGB_COLOR_HSB(251,100,49)  &trans           &rgb_ug RGB_SAD  &rgb_ug RGB_SAI
 &trans      &trans        &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT           &trans           &trans                                             &rgb_ug RGB_COLOR_HSB(62,100,50)   &trans                             &trans           &trans           &rgb_ug RGB_BRD  &rgb_ug RGB_BRI  &tog 0
 &trans      &trans        &trans          &trans          &trans              &trans           &trans  &trans  &trans                             &trans                             &rgb_ug RGB_EFR                    &rgb_ug RGB_EFF  &trans           &trans           &rgb_ug RGB_SPD  &rgb_ug RGB_SPI
-            &trans        &trans          &trans          &trans              &macro_vim_save                  &trans                             &trans                             &trans                             &trans           &trans
+            &trans        &trans          &trans          &trans              &macro_vim_save                  &rgb_ug RGB_BRD                    &trans                             &rgb_ug RGB_BRI                    &trans           &trans
             >;
         };
 
