@@ -50,11 +50,18 @@
 
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
-        sensors = <&left_encoder &right_encoder>;
-        triggers-per-rotation = <20>;
-        sensor-bindings =
-            <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>,  // Encoder esquerdo - Volume
-            <&inc_dec_kp C_SCROLL_UP C_SCROLL_DOWN>;  // Encoder direito - Scroll
+
+        sensor@0 {
+            compatible = "zmk,behavior-sensor-encoder";
+            sensor = <&left_encoder>;
+            binding = <&inc_dec_kp C_VOL_UP C_VOL_DOWN>;  // Encoder esquerdo controla volume
+        };
+
+        sensor@1 {
+            compatible = "zmk,behavior-sensor-encoder";
+            sensor = <&right_encoder>;
+            binding = <&inc_dec_kp C_SCROLL_UP C_SCROLL_DOWN>;  // Encoder direito controla scroll
+        };
     };
 };
 
