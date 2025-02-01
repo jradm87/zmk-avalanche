@@ -54,10 +54,6 @@ X
         steps = <80>;
     };
 
-    sensor-bindings =
-        <&inc_dec_kp KC_VOLU KC_VOLD>,  // Encoder esquerdo - Volume
-        <&inc_dec_kp KC_WH_D KC_WH_U>;  // Encoder direito - Scroll
-
 
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
