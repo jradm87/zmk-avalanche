@@ -53,8 +53,8 @@
         sensors = <&left_encoder &right_encoder>;
         triggers-per-rotation = <20>;
         sensor-bindings =
-            <&inc_dec_kp KC_VOLU KC_VOLD>,
-            <&inc_dec_kp KC_WH_D KC_WH_U>;
+            <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>,  // Encoder esquerdo - Volume
+            <&inc_dec_kp C_SCROLL_UP C_SCROLL_DOWN>;  // Encoder direito - Scroll
     };
 };
 
