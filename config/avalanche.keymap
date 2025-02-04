@@ -146,7 +146,7 @@
                   &kp CAPSLOCK  &kp LWIN  &kp LEFT_ALT  &kp SPACE  &kp ENTER                        &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp PRINTSCREEN  &mo 1
             >;
 
-            sensor-bindings = <&scroll>, <&scroll>;
+            sensor-bindings = <&inc_dec_kp C_BRIGHTNESS_INC C_BRIGHTNESS_DEC>, <&scroll>;
         };
 
         CONFIG {
