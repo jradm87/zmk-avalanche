@@ -14,10 +14,12 @@
         button@0 {
             label = "Button 1";
             gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
+            reg = <0>;
         };
         button@1 {
             label = "Button 2";
             gpios = <&gpio0 12 GPIO_ACTIVE_LOW>;
+            reg = <1>;
         };
     };
 };
