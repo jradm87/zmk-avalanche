@@ -7,7 +7,7 @@
     quick-tap-ms = <100>;
 };
 
-&mt { tapping-term-ms = <400>; };
+&mt { tapping-term-ms = <800>; };
 
 / {
     behaviors {
