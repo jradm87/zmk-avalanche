@@ -7,6 +7,8 @@
     quick-tap-ms = <100>;
 };
 
+&mt { tapping-term-ms = <400>; };
+
 / {
     behaviors {
         bhm: balanced_homerow_mods {
