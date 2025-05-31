@@ -28,9 +28,11 @@
         hm: homerow_mods {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <250>;
+            tapping-term-ms = <400>;
             flavor = "tap-preferred";
             bindings = <&kp>, <&kp>;
+
+            quick-tap-ms = <200>;
         };
     };
 
@@ -110,11 +112,11 @@
             // ---------------------------------------------------------------------------------------------------------------------------------------------
 
             bindings = <
-&kp GRAVE         &hm F1 NUMBER_1  &hm F2 NUMBER_2  &hm F3 NUMBER_3  &hm F4 NUMBER_4  &hm F5 N5                      &hm F6 NUMBER_6  &hm F7 N7        &hm F8 N8    &hm F9 N9      &hm F10 N0       &kp SQT
-&kp TAB           &kp Q            &kp W            &kp E            &kp R            &kp T                          &kp Y            &kp U            &kp I        &kp O          &kp P            &kp MINUS
-&lt 4 ESCAPE      &kp CAPSLOCK     &kp A            &kp S            &kp D            &kp F      &kp G                                &kp H            &kp J        &kp K          &kp L            &hm RIGHT_CONTROL SEMICOLON  &kp EQUAL  &lt 3 ESCAPE
-&kp LEFT_CONTROL  &kp Z            &kp X            &kp C            &kp V            &kp B      &kp DELETE  &trans  &trans           &kp BACKSPACE    &kp N        &kp M          &kp COMMA        &kp PERIOD                   &kp FSLH   &kp RIGHT_CONTROL
-                  &kp LEFT_GUI     &kp LEFT_ALT     &lt 2 SPACE      &kp LEFT_SHIFT   &kp ENTER                      &kp ENTER        &kp RIGHT_SHIFT  &lt 1 SPACE  &kp RIGHT_ALT  &kp PRINTSCREEN
+&kp GRAVE         &hm F1 NUMBER_1         &hm F2 NUMBER_2  &hm F3 NUMBER_3  &hm F4 NUMBER_4  &hm F5 N5                           &hm F6 NUMBER_6  &hm F7 N7        &hm F8 N8       &hm F9 N9       &hm F10 N0       &kp SQT
+&kp TAB           &hm NUMBER_1 Q          &hm NUMBER_2 W   &hm NUMBER_3 E   &hm NUMBER_4 R   &hm NUMBER_5 T                      &hm NUMBER_6 Y   &hm NUMBER_7 U   &hm NUMBER_8 I  &hm NUMBER_9 O  &hm NUMBER_0 P   &kp MINUS
+&lt 4 ESCAPE      &hm CAPSLOCK LESS_THAN  &kp A            &kp S            &kp D            &kp F           &kp G                                &kp H            &kp J           &kp K           &kp L            &hm RIGHT_CONTROL SEMICOLON  &kp EQUAL  &lt 3 ESCAPE
+&kp LEFT_CONTROL  &kp Z                   &kp X            &kp C            &kp V            &kp B           &kp DELETE  &trans  &trans           &kp BACKSPACE    &kp N           &kp M           &kp COMMA        &kp PERIOD                   &kp FSLH   &kp RIGHT_CONTROL
+                  &kp LEFT_GUI            &kp LEFT_ALT     &lt 2 SPACE      &kp LEFT_SHIFT   &kp ENTER                           &kp ENTER        &kp RIGHT_SHIFT  &lt 1 SPACE     &kp RIGHT_ALT   &kp PRINTSCREEN
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
