@@ -116,7 +116,7 @@
 &kp TAB           &hm NUMBER_1 Q          &hm NUMBER_2 W   &hm NUMBER_3 E   &hm NUMBER_4 R   &hm NUMBER_5 T                      &hm NUMBER_6 Y   &hm NUMBER_7 U   &hm NUMBER_8 I  &hm NUMBER_9 O  &hm NUMBER_0 P   &kp MINUS
 &lt 4 ESCAPE      &hm CAPSLOCK LESS_THAN  &kp A            &kp S            &kp D            &kp F           &kp G                                &kp H            &kp J           &kp K           &kp L            &hm RIGHT_CONTROL SEMICOLON  &kp EQUAL  &lt 3 ESCAPE
 &kp LEFT_CONTROL  &kp Z                   &kp X            &kp C            &kp V            &kp B           &kp DELETE  &trans  &trans           &kp BACKSPACE    &kp N           &kp M           &kp COMMA        &kp PERIOD                   &kp FSLH   &kp RIGHT_CONTROL
-                  &kp LEFT_GUI            &kp LEFT_ALT     &lt 2 SPACE      &kp LEFT_SHIFT   &kp ENTER                           &kp ENTER        &kp RIGHT_SHIFT  &lt 1 SPACE     &kp RIGHT_ALT   &kp PRINTSCREEN
+                  &kp LEFT_GUI            &kp LEFT_ALT     &lt 2 SPACE      &kp SPACE        &kp ENTER                           &kp ENTER        &kp RIGHT_SHIFT  &lt 1 SPACE     &kp RIGHT_ALT   &kp PRINTSCREEN
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
