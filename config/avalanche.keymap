@@ -113,7 +113,7 @@
 
             bindings = <
 &kp ESC           &hm F1 NUMBER_1  &hm F2 NUMBER_2  &hm F3 NUMBER_3  &hm F4 NUMBER_4  &hm F5 N5                           &hm F6 NUMBER_6  &hm F7 N7        &hm F8 N8       &hm F9 N9       &hm F10 N0      &kp BACKSPACE
-&kp TAB           &hm NUMBER_1 Q   &hm NUMBER_2 W   &hm NUMBER_3 E   &hm NUMBER_4 R   &hm NUMBER_5 T                      &hm NUMBER_6 Y   &hm NUMBER_7 U   &hm NUMBER_8 I  &hm NUMBER_9 O  &hm NUMBER_0 P  &kp MINUS
+&kp TAB           &kp Q            &hm NUMBER_2 W   &hm NUMBER_3 E   &hm NUMBER_4 R   &hm NUMBER_5 T                      &hm NUMBER_6 Y   &hm NUMBER_7 U   &hm NUMBER_8 I  &hm NUMBER_9 O  &hm NUMBER_0 P  &kp MINUS
 &kp LEFT_SHIFT    &mo 2            &kp A            &kp S            &kp D            &kp F           &kp G                                &kp H            &kp J           &kp K           &kp L           &hm RIGHT_CONTROL SEMICOLON  &kp EQUAL  &mo 2
 &kp LEFT_CONTROL  &kp Z            &kp X            &kp C            &kp V            &kp B           &kp DELETE  &trans  &kp PRINTSCREEN  &kp BACKSPACE    &kp N           &kp M           &kp COMMA       &kp PERIOD                   &kp FSLH   &kp RIGHT_CONTROL
                   &kp LEFT_ALT     &kp LEFT_GUI     &lt 2 SPACE      &kp SPACE        &kp ENTER                           &kp ENTER        &kp RIGHT_SHIFT  &lt 1 SPACE     &kp END         &mo 4
