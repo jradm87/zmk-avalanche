@@ -112,11 +112,11 @@
             // ---------------------------------------------------------------------------------------------------------------------------------------------
 
             bindings = <
-&kp ESC           &hm F1 NUMBER_1  &hm F2 NUMBER_2  &hm F3 NUMBER_3  &hm F4 NUMBER_4  &hm F5 N5                           &hm F6 NUMBER_6  &hm F7 N7        &hm F8 N8       &hm F9 N9       &hm F10 N0      &kp BACKSPACE
-&kp TAB           &hm NUMBER_1 Q   &hm NUMBER_2 W   &hm NUMBER_3 E   &hm NUMBER_4 R   &hm NUMBER_5 T                      &hm NUMBER_6 Y   &hm NUMBER_7 U   &hm NUMBER_8 I  &hm NUMBER_9 O  &hm NUMBER_0 P  &kp MINUS
-&kp LEFT_SHIFT    &mo 2            &kp A            &kp S            &kp D            &kp F           &kp G                                &kp H            &kp J           &kp K           &kp L           &hm RIGHT_CONTROL SEMICOLON  &kp EQUAL  &mo 2
-&kp LEFT_CONTROL  &kp Z            &kp X            &kp C            &kp V            &kp B           &kp DELETE  &trans  &kp PRINTSCREEN  &kp BACKSPACE    &kp N           &kp M           &kp COMMA       &kp PERIOD                   &kp FSLH   &kp RIGHT_CONTROL
-                  &kp LEFT_ALT     &kp LEFT_GUI     &lt 2 SPACE      &kp SPACE        &kp ENTER                           &kp ENTER        &kp RIGHT_SHIFT  &lt 1 SPACE     &kp END         &mo 4
+&kp ESC           &hm F1 NUMBER_1  &hm F2 NUMBER_2  &hm F3 NUMBER_3  &hm F4 NUMBER_4  &hm F5 N5                          &hm F6 NUMBER_6  &hm F7 N7     &hm F8 N8  &hm F9 N9  &hm F10 N0  &kp BACKSPACE
+&kp TAB           &kp Q            &kp W            &kp E            &kp R            &kp T                              &kp Y            &kp U         &kp I      &kp O      &kp P       &kp MINUS
+&kp LEFT_SHIFT    &mo 1            &kp A            &kp S            &kp D            &kp F      &kp G                                    &kp H         &kp J      &kp K      &kp L       &kp SEMI       &kp EQUAL  &mo 1
+&kp LEFT_CONTROL  &kp Z            &kp X            &kp C            &kp V            &kp B      &kp DELETE  &kp K_MUTE  &kp PRINTSCREEN  &kp UP_ARROW  &kp N      &kp M      &kp COMMA   &kp PERIOD     &kp FSLH   &kp APOS
+                  &kp LEFT_ALT     &kp LEFT_GUI     &kp SPACE        &kp SPACE        &kp ENTER                          &kp LEFT         &kp DOWN      &kp RIGHT  &kp END    &mo 1
             >;
 
             sensor-bindings =
@@ -124,55 +124,13 @@
                 <&inc_dec_kp PAGE_UP PAGE_DOWN>;
         };
 
-        NAV {
-            bindings = <
-&kp ESC  &none               &none               &none             &none                &none                  &none        &none           &none           &none         &none            &none
-&none    &kp HOME            &kp UP_ARROW        &kp END           &none                &none                  &kp PAGE_UP  &kp PAGE_DOWN   &none           &none         &none            &none
-&kp TAB  &none               &kp LEFT_ARROW      &kp DOWN_ARROW    &kp RIGHT_ARROW      &none  &none                        &kp LEFT_ARROW  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none  &none  &kp ESC
-&none    &kp LC(LEFT_ARROW)  &kp LC(DOWN_ARROW)  &kp LC(UP_ARROW)  &kp LC(RIGHT_ARROW)  &none  &kp DEL  &none  &none        &kp BACKSPACE   &none           &none         &none            &none  &none  &none
-         &none               &none               &none             &kp LEFT_SHIFT       &none                  &none        &none           &none           &none         &none
-            >;
-        };
-
-        NUM {
-            // ---------------------------------------------------------------------------------------------------------------------------------------------
-            //            |     |     |     |     |     |     |                                          |     |     |     |     |     |     |
-            //            |     | HOME|  UP | END |     |     |                                          |     |HOME |     |END  |     |     |
-            //       |    |     | LEFT| DOWN|RIGHT|     |     |                                          |SCLUP|LEFT |  UP |  A  |PG_UP|     |    |
-            //            |     |     |     |     |     |     |     |                              |     |SCLDN|LEFT | DOWN|RIGHT|PG_DN|     |
-            //                        |     |     |     |     |     |                              |     |     |     |     |     |
-            // ---------------------------------------------------------------------------------------------------------------------------------------------
-
-            bindings = <
-&kp GRAVE  &kp N7  &kp N8  &kp N9   &kp PLUS   &kp ASTERISK                    &kp HASH       &kp DOLLAR            &kp EXCLAMATION        &kp QUESTION       &none            &none
-&kp TAB    &kp N4  &kp N5  &kp N6   &kp MINUS  &kp EQUAL                       &kp BACKSLASH  &kp PIPE              &kp SLASH              &kp AMPERSAND      &kp UNDERSCORE   &none
-&kp ESC    &none   &kp N1  &kp N2   &kp N3     &kp FSLH      &kp TILDE                        &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp LEFT_BRACE     &kp RIGHT_BRACE  &kp PERCENT       &kp CARET  &none
-&none      &kp N0  &none   &kp DOT  &none      &none         &kp DEL    &none  &none          &kp BACKSPACE         &kp LEFT_BRACKET       &kp RIGHT_BRACKET  &kp LESS_THAN    &kp GREATER_THAN  &none      &kp AT_SIGN
-           &none   &none   &none    &none      &none                           &none          &none                 &none                  &none              &none
-            >;
-
-            sensor-bindings = <&inc_dec_kp PAGE_UP PAGE_DOWN>;
-        };
-
-        SYM {
-            bindings = <
-&none            &kp LEFT_BRACE  &kp RIGHT_BRACE   &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp LEFT_BRACKET                       &kp RIGHT_BRACKET  &kp ASTERISK   &kp PLUS     &kp EQUAL   &kp PIPE        &kp BACKSLASH
-&none            &kp LESS_THAN   &kp GREATER_THAN  &kp COLON             &kp SEMICOLON          &kp DOUBLE_QUOTES                      &kp SQT            &kp CARET      &kp PERCENT  &kp DOLLAR  &kp UNDERSCORE  &kp TILDE
-&macro_vim_save  &none           &kp GRAVE         &kp HASH              &kp EXCLAMATION        &kp AMPERSAND      &kp AT_SIGN                            &kp QUESTION   &kp COMMA    &kp PERIOD  &kp SLASH       &kp BACKSLASH  &none  &none
-&none            &none           &none             &none                 &none                  &none              &kp DELETE   &none  &none              &kp BACKSPACE  &none        &none       &none           &none          &none  &none
-                 &none           &none             &none                 &none                  &none                                  &none              &none          &none        &none       &none
-            >;
-
-            sensor-bindings = <&inc_dec_kp RIGHT LEFT>;
-        };
-
         SYS {
             bindings = <
-&kp PRINTSCREEN  &kp F1          &kp F2            &kp F3        &kp F4      &kp F5                                     &kp F6          &kp F7           &kp F8                          &kp F9                           &kp F10                            &kp F11
-&none            &kp C_PREVIOUS  &kp C_PLAY_PAUSE  &kp K_MUTE    &kp C_NEXT  &kp C_VOLUME_UP                            &rgb_ug RGB_ON  &rgb_ug RGB_BRI  &rgb_ug RGB_COLOR_HSB(0,0,100)  &rgb_ug RGB_COLOR_HSB(0,100,50)  &rgb_ug RGB_COLOR_HSB(243,100,50)  &kp F12
-&kp ESCAPE       &none           &none             &none         &none       &none            &kp C_VOLUME_DOWN                         &rgb_ug RGB_OFF  &rgb_ug RGB_BRD                 &rgb_ug RGB_EFR                  &rgb_ug RGB_EFF                    &rgb_ug RGB_COLOR_HSB(139,100,48)  &rgb_ug RGB_COLOR_HSB(0,100,50)   &ext_power EP_ON
-&sys_reset       &none           &none             &none         &none       &none            &kp DEL            &none  &none           &kp BACKSPACE    &none                           &none                            &none                              &none                              &rgb_ug RGB_COLOR_HSB(60,100,50)  &studio_unlock
-                 &bt BT_SEL 0    &bt BT_SEL 1      &bt BT_SEL 2  &none       &bt BT_CLR                                 &none           &none            &none                           &none                            &none
+&kp PRINTSCREEN  &kp F1          &kp F2            &kp F3        &kp F4        &kp F5                                     &kp F6          &kp F7           &kp F8                          &kp F9                           &kp F10                            &kp F11
+&none            &kp C_PREVIOUS  &kp C_PLAY_PAUSE  &kp K_MUTE    &kp C_NEXT    &kp C_VOLUME_UP                            &rgb_ug RGB_ON  &rgb_ug RGB_BRI  &rgb_ug RGB_COLOR_HSB(0,0,100)  &rgb_ug RGB_COLOR_HSB(0,100,50)  &rgb_ug RGB_COLOR_HSB(243,100,50)  &kp F12
+&kp ESCAPE       &none           &none             &none         &none         &none            &kp C_VOLUME_DOWN                         &rgb_ug RGB_OFF  &rgb_ug RGB_BRD                 &rgb_ug RGB_EFR                  &rgb_ug RGB_EFF                    &rgb_ug RGB_COLOR_HSB(139,100,48)  &rgb_ug RGB_COLOR_HSB(0,100,50)   &ext_power EP_ON
+&sys_reset       &none           &none             &none         &bt BT_PRV    &bt BT_NXT       &kp DEL            &none  &none           &kp BACKSPACE    &none                           &none                            &none                              &none                              &rgb_ug RGB_COLOR_HSB(60,100,50)  &studio_unlock
+                 &kp LEFT_ALT    &bt BT_SEL 2      &bt BT_SEL 1  &bt BT_SEL 0  &bt BT_CLR                                 &none           &none            &none                           &none                            &none
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOLUME_UP C_VOLUME_DOWN>;
