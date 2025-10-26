@@ -112,11 +112,11 @@
             // ---------------------------------------------------------------------------------------------------------------------------------------------
 
             bindings = <
-&kp ESC           &hm F1 NUMBER_1  &hm F2 NUMBER_2  &hm F3 NUMBER_3  &hm F4 NUMBER_4  &hm F5 N5                          &hm F6 NUMBER_6  &hm F7 N7     &hm F8 N8  &hm F9 N9  &hm F10 N0  &kp BACKSPACE
-&kp TAB           &kp Q            &kp W            &kp E            &kp R            &kp T                              &kp Y            &kp U         &kp I      &kp O      &kp P       &kp MINUS
-&kp LEFT_SHIFT    &mo 1            &kp A            &kp S            &kp D            &kp F      &kp G                                    &kp H         &kp J      &kp K      &kp L       &kp SEMI       &kp EQUAL  &mo 2
-&kp LEFT_CONTROL  &kp Z            &kp X            &kp C            &kp V            &kp B      &kp DELETE  &kp K_MUTE  &kp PRINTSCREEN  &kp UP_ARROW  &kp N      &kp M      &kp COMMA   &kp PERIOD     &kp FSLH   &kp APOS
-                  &kp LEFT_ALT     &kp LEFT_GUI     &kp SPACE        &kp SPACE        &kp ENTER                          &kp LEFT         &kp DOWN      &kp RIGHT  &kp END    &mo 1
+&kp ESC           &kp NUMBER_1  &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4  &kp N5                             &kp NUMBER_6     &kp N7        &kp N8     &kp N9   &kp N0     &kp BACKSPACE
+&kp TAB           &kp Q         &kp W         &kp E         &kp R         &kp T                              &kp Y            &kp U         &kp I      &kp O    &kp P      &kp MINUS
+&kp LEFT_SHIFT    &mo 1         &kp A         &kp S         &kp D         &kp F      &kp G                                    &kp H         &kp J      &kp K    &kp L      &kp SEMI       &kp EQUAL  &mo 2
+&kp LEFT_CONTROL  &kp Z         &kp X         &kp C         &kp V         &kp B      &kp DELETE  &kp K_MUTE  &kp PRINTSCREEN  &kp UP_ARROW  &kp N      &kp M    &kp COMMA  &kp PERIOD     &kp FSLH   &kp APOS
+                  &kp LEFT_ALT  &kp LEFT_GUI  &none         &kp SPACE     &kp ENTER                          &kp LEFT         &kp DOWN      &kp RIGHT  &kp END  &mo 1
             >;
 
             sensor-bindings =
