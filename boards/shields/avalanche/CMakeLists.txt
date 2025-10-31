@@ -1,0 +1,6 @@
+if(CONFIG_ZMK_DISPLAY AND (NOT CONFIG_ZMK_SPLIT OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL))
+  zephyr_library_include_directories(${CMAKE_SOURCE_DIR}/include)
+  zephyr_library_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/widgets)
+  zephyr_library_sources(custom_status_screen.c)
+  zephyr_library_sources(widgets/caps_status.c)
+endif()
