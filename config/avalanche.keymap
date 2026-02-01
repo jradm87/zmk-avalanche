@@ -85,11 +85,6 @@
             key-positions = <11 10>;
         };
 
-        vimsave {
-            bindings = <&macro_vim_save>;
-            key-positions = <58 57>;
-        };
-
         altF4 {
             bindings = <&kp LA(F4)>;
             key-positions = <54 4>;
