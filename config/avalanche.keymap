@@ -138,11 +138,11 @@
 
         config {
             bindings = <
-&kp ESCAPE    &kp F1          &kp F2    &kp F3     &kp F4  &kp F5                  &kp F6  &kp F7  &kp F8  &kp F9    &kp F10  &kp F11
-&trans        &kp UP_ARROW    &trans    &trans     &trans  &trans                  &trans  &trans  &trans  &trans    &trans   &kp F12
-&kp CAPSLOCK  &kp LEFT_ARROW  &kp DOWN  &kp RIGHT  &trans  &trans  &trans                  &trans  &trans  &trans    &trans   &trans   &trans    &trans
-&trans        &trans          &trans    &trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans    &trans   &trans   &kp PIPE  &kp DOUBLE_QUOTES
-              &kp LEFT_ALT    &trans    &trans     &trans  &trans                  &trans  &trans  &trans  &kp HOME  &trans
+&kp ESCAPE    &kp F1          &kp F2    &kp F3     &kp F4  &kp F5                  &kp F6  &kp F7  &kp F8  &kp F9          &kp F10           &kp F11
+&trans        &kp UP_ARROW    &trans    &trans     &trans  &trans                  &trans  &trans  &trans  &kp LEFT_BRACE  &kp RIGHT_BRACE   &kp F12
+&kp CAPSLOCK  &kp LEFT_ARROW  &kp DOWN  &kp RIGHT  &trans  &trans  &trans                  &trans  &trans  &trans          &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &trans    &trans
+&trans        &trans          &trans    &trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans          &trans            &trans             &kp PIPE  &kp DOUBLE_QUOTES
+              &kp LEFT_ALT    &trans    &trans     &trans  &trans                  &trans  &trans  &trans  &kp HOME        &trans
             >;
         };
 
@@ -163,6 +163,16 @@
 &kp LEFT_SHIFT    &trans        &kp A         &kp S         &kp D         &kp F      &kp G                   &trans  &trans  &trans  &trans  &trans  &trans  &trans
 &kp LEFT_CONTROL  &kp Z         &kp X         &kp C         &kp V         &kp B      &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
                   &none         &trans        &kp SPACE     &kp SPACE     &kp SPACE                  &trans  &trans  &trans  &trans  &trans
+            >;
+        };
+
+        layer_4 {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+        &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans
             >;
         };
     };
