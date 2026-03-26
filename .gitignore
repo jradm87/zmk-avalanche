@@ -9,6 +9,7 @@
 zephyr/
 zmk/
 modules/
+zmk-avalanche/
 
 # SDK local
 zephyr-sdk-*/
