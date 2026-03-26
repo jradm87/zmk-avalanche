@@ -18,9 +18,26 @@
 #
 ---
 include:
+  # Dongle (central) - connects to PC via USB
+  - board: nice_nano_v2
+    shield: avalanche_dongle
+  # Left (peripheral) - connects to dongle via BLE
   - board: nice_nano_v2
     shield: avalanche_left
+    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+    artifact-name: avalanche_left_dongle
+  # Right (peripheral) - connects to dongle via BLE
   - board: nice_nano_v2
     shield: avalanche_right
+    cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+    artifact-name: avalanche_right_dongle
+  # Settings reset
   - board: nice_nano_v2
     shield: settings_reset
+  # Legacy builds without dongle (left as central)
+  - board: nice_nano_v2
+    shield: avalanche_left
+    artifact-name: avalanche_left_standalone
+  - board: nice_nano_v2
+    shield: avalanche_right
+    artifact-name: avalanche_right_standalone

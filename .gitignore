@@ -1,7 +1,35 @@
+# macOS
 .DS_Store
-
-# Build directories
-build/
-
 /**/.DS_Store
 
+# West workspace (gerado pelo `west init`)
+.west/
+
+# Dependências clonadas pelo west
+zephyr/
+zmk/
+modules/
+
+# SDK local
+zephyr-sdk-*/
+*.tar.xz
+*.tar.gz
+
+# Build
+build/
+
+# Firmware compilado (GitHub Actions gera como artifact)
+firmware/
+
+# Ambiente Python local
+.venv/
+__pycache__/
+*.pyc
+
+# Scripts locais de desenvolvimento
+build.sh
+resume.sh
+
+# Arquivos gerados pelo Zephyr/CMake
+*.log
+*.lock
