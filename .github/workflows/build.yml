@@ -56,6 +56,11 @@ jobs:
       - name: West Export Zephyr
         run: west zephyr-export
 
+      - name: Copy shield to ZMK
+        run: |
+          rm -rf zmk/app/boards/shields/avalanche
+          cp -r boards/shields/avalanche zmk/app/boards/shields/
+
       - name: Build
         run: |
           west build -s zmk/app \
@@ -63,7 +68,6 @@ jobs:
             -- \
             -DSHIELD="${{ matrix.shield }}" \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" \
-            -DZMK_EXTRA_MODULES="${GITHUB_WORKSPACE}" \
             ${{ matrix.cmake-args }}
 
       - name: Upload artifact
