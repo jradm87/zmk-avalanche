@@ -2,16 +2,10 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    - name: jradm87
-      url-base: https://github.com/jradm87
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: v0.3
       import: app/west.yml
-    - name: zmk-avalanche
-      remote: jradm87
-      revision: main
-      path: zmk-avalanche
   self:
     path: config

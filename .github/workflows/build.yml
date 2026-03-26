@@ -2,4 +2,72 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
+    runs-on: ubuntu-latest
+    container:
+      image: zmkfirmware/zmk-build-arm:3.5
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: nice_nano_v2
+            shield: avalanche_dongle
+            artifact-name: avalanche_dongle
+          - board: nice_nano_v2
+            shield: avalanche_left
+            cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+            artifact-name: avalanche_left_dongle
+          - board: nice_nano_v2
+            shield: avalanche_right
+            cmake-args: -DCONFIG_ZMK_SPLIT=y -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+            artifact-name: avalanche_right_dongle
+          - board: nice_nano_v2
+            shield: settings_reset
+            artifact-name: settings_reset
+          - board: nice_nano_v2
+            shield: avalanche_left
+            artifact-name: avalanche_left_standalone
+          - board: nice_nano_v2
+            shield: avalanche_right
+            artifact-name: avalanche_right_standalone
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache west modules
+        id: cache-west
+        uses: actions/cache@v3
+        with:
+          path: |
+            .west/
+            zmk/
+            zephyr/
+            modules/
+          key: west-${{ hashFiles('config/west.yml') }}
+
+      - name: West Init
+        if: steps.cache-west.outputs.cache-hit != 'true'
+        run: west init -l config
+
+      - name: West Update
+        if: steps.cache-west.outputs.cache-hit != 'true'
+        run: west update
+
+      - name: West Export Zephyr
+        run: west zephyr-export
+
+      - name: Build
+        run: |
+          west build -s zmk/app \
+            -b "${{ matrix.board }}" \
+            -- \
+            -DSHIELD="${{ matrix.shield }}" \
+            -DZMK_CONFIG="${GITHUB_WORKSPACE}/config" \
+            -DZMK_EXTRA_MODULES="${GITHUB_WORKSPACE}" \
+            ${{ matrix.cmake-args }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: build/zephyr/zmk.uf2
