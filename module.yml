@@ -1,5 +1,3 @@
 build:
-  cmake: .
-  kconfig: Kconfig
   settings:
     shield_root: boards
