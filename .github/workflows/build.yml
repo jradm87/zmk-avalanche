@@ -32,11 +32,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache west modules
         id: cache-west
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .west/
@@ -67,7 +67,7 @@ jobs:
             ${{ matrix.cmake-args }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
           path: build/zephyr/zmk.uf2
