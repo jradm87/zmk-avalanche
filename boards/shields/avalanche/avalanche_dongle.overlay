@@ -31,4 +31,10 @@
         display-name = "Default";
         transform = <&default_transform>;
     };
+
+    sensors: sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <>;
+        triggers-per-rotation = <20>;
+    };
 };
