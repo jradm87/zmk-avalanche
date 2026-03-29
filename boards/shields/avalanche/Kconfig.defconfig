@@ -20,6 +20,16 @@ config BT_MAX_CONN
 config BT_MAX_PAIRED
     default 7
 
+if ZMK_DISPLAY
+
+config I2C
+    default y
+
+config SSD1306
+    default y
+
+endif # ZMK_DISPLAY
+
 endif # SHIELD_AVALANCHE_DONGLE
 
 if SHIELD_AVALANCHE_LEFT
