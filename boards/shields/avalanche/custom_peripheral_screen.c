@@ -16,6 +16,13 @@ static lv_obj_t *side_label;
 static uint8_t   anim_step = 0;
 
 static void anim_timer_cb(lv_timer_t *t) {
+    /* Poll BT status every tick (400ms) */
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
+    bool conn = zmk_split_bt_peripheral_is_connected();
+    lv_label_set_text(bt_label, conn ? "BT: [CONN  OK]" : "BT: [-- OFF --]");
+#endif
+
+    /* Animate side indicator */
 #if IS_ENABLED(CONFIG_SHIELD_AVALANCHE_LEFT)
     static const char *frames[] = {
         "<<< LEFT >>>",
