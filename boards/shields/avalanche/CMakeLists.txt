@@ -1,3 +1,7 @@
 if(CONFIG_ZMK_DISPLAY_STATUS_SCREEN_CUSTOM)
-    target_sources(app PRIVATE custom_status_screen.c)
+    if(CONFIG_SHIELD_AVALANCHE_DONGLE)
+        target_sources(app PRIVATE custom_status_screen.c)
+    elseif(CONFIG_SHIELD_AVALANCHE_LEFT OR CONFIG_SHIELD_AVALANCHE_RIGHT)
+        target_sources(app PRIVATE custom_peripheral_screen.c)
+    endif()
 endif()
