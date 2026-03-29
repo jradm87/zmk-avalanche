@@ -20,6 +20,8 @@ static void anim_timer_cb(lv_timer_t *t) {
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
     bool conn = zmk_split_bt_peripheral_is_connected();
     lv_label_set_text(bt_label, conn ? "BT: [CONN  OK]" : "BT: [-- OFF --]");
+#else
+    lv_label_set_text(bt_label, "BT: [CENTRAL ]");
 #endif
 
     /* Animate side indicator */
@@ -57,7 +59,11 @@ lv_obj_t *zmk_display_status_screen(void) {
 
     bt_label = lv_label_create(scr);
     lv_obj_set_style_text_font(bt_label, &lv_font_unscii_8, 0);
-    lv_label_set_text(bt_label, "BT: [.........]");
+#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
+    lv_label_set_text(bt_label, "BT: [-- OFF --]");
+#else
+    lv_label_set_text(bt_label, "BT: [CENTRAL ]");
+#endif
     lv_obj_set_pos(bt_label, 0, 30);
 
     side_label = lv_label_create(scr);
