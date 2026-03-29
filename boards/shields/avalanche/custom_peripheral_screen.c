@@ -2,7 +2,6 @@
 #include <zephyr/logging/log.h>
 #include <lvgl.h>
 #include <zmk/display.h>
-#include <zmk/events/battery_state_changed.h>
 #include <zmk/event_manager.h>
 
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
@@ -13,23 +12,8 @@
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 static lv_obj_t *bt_label;
-static lv_obj_t *bat_label;
 static lv_obj_t *side_label;
 static uint8_t   anim_step = 0;
-
-static void set_battery(uint8_t pct) {
-    int  filled = (pct * 8) / 100;
-    char buf[20];
-    int  i = 0;
-    buf[i++] = '[';
-    for (int j = 0; j < 8; j++) buf[i++] = (j < filled) ? '#' : '.';
-    buf[i++] = ']';
-    buf[i]   = '\0';
-    char perc[8];
-    snprintf(perc, sizeof(perc), " %3u%%", pct);
-    strncat(buf, perc, sizeof(buf) - strlen(buf) - 1);
-    lv_label_set_text(bat_label, buf);
-}
 
 static void anim_timer_cb(lv_timer_t *t) {
 #if IS_ENABLED(CONFIG_SHIELD_AVALANCHE_LEFT)
@@ -54,7 +38,6 @@ static void anim_timer_cb(lv_timer_t *t) {
 lv_obj_t *zmk_display_status_screen(void) {
     lv_obj_t *scr = lv_obj_create(NULL);
 
-    /* Logo */
     lv_obj_t *logo1 = lv_label_create(scr);
     lv_obj_set_style_text_font(logo1, &lv_font_unscii_8, 0);
     lv_label_set_text(logo1, " /\\ AVALANCHE");
@@ -63,29 +46,13 @@ lv_obj_t *zmk_display_status_screen(void) {
     lv_obj_t *logo2 = lv_label_create(scr);
     lv_obj_set_style_text_font(logo2, &lv_font_unscii_8, 0);
     lv_label_set_text(logo2, "/  \\ keyboard");
-    lv_obj_set_pos(logo2, 0, 9);
+    lv_obj_set_pos(logo2, 0, 12);
 
-    /* Separator */
-    lv_obj_t *sep = lv_obj_create(scr);
-    lv_obj_set_size(sep, 128, 1);
-    lv_obj_set_pos(sep, 0, 20);
-    lv_obj_set_style_border_width(sep, 0, 0);
-    lv_obj_set_style_pad_all(sep, 0, 0);
-    lv_obj_set_style_bg_opa(sep, LV_OPA_COVER, 0);
-
-    /* BT label */
     bt_label = lv_label_create(scr);
     lv_obj_set_style_text_font(bt_label, &lv_font_unscii_8, 0);
     lv_label_set_text(bt_label, "BT: [.........]");
-    lv_obj_set_pos(bt_label, 0, 24);
+    lv_obj_set_pos(bt_label, 0, 30);
 
-    /* Battery label */
-    bat_label = lv_label_create(scr);
-    lv_obj_set_style_text_font(bat_label, &lv_font_unscii_8, 0);
-    lv_label_set_text(bat_label, "[........]  --%");
-    lv_obj_set_pos(bat_label, 0, 36);
-
-    /* Side animated indicator */
     side_label = lv_label_create(scr);
     lv_obj_set_style_text_font(side_label, &lv_font_unscii_8, 0);
     lv_obj_align(side_label, LV_ALIGN_BOTTOM_MID, 0, -2);
@@ -99,15 +66,6 @@ lv_obj_t *zmk_display_status_screen(void) {
 
     return scr;
 }
-
-static int battery_handler(const zmk_event_t *eh) {
-    const struct zmk_battery_state_changed *ev = as_zmk_battery_state_changed(eh);
-    if (ev) set_battery(ev->state_of_charge);
-    return ZMK_EV_EVENT_BUBBLE;
-}
-
-ZMK_LISTENER(periph_bat, battery_handler);
-ZMK_SUBSCRIPTION(periph_bat, zmk_battery_state_changed);
 
 #if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
 static int bt_handler(const zmk_event_t *eh) {
