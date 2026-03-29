@@ -4,9 +4,13 @@
 #include <zmk/display.h>
 #include <zmk/event_manager.h>
 
-#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
+/* Peripheral = ZMK_SPLIT enabled AND not central role */
+#if IS_ENABLED(CONFIG_ZMK_SPLIT) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+#define IS_PERIPHERAL 1
 #include <zmk/split/bluetooth/peripheral.h>
 #include <zmk/events/split_peripheral_status_changed.h>
+#else
+#define IS_PERIPHERAL 0
 #endif
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -16,12 +20,10 @@ static lv_obj_t *side_label;
 static uint8_t   anim_step = 0;
 
 static void anim_timer_cb(lv_timer_t *t) {
-    /* Poll BT status every tick (400ms) */
-#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
+    /* Poll BT status every 400ms */
+#if IS_PERIPHERAL
     bool conn = zmk_split_bt_peripheral_is_connected();
     lv_label_set_text(bt_label, conn ? "BT: [CONN  OK]" : "BT: [-- OFF --]");
-#else
-    lv_label_set_text(bt_label, "BT: [CENTRAL ]");
 #endif
 
     /* Animate side indicator */
@@ -59,11 +61,7 @@ lv_obj_t *zmk_display_status_screen(void) {
 
     bt_label = lv_label_create(scr);
     lv_obj_set_style_text_font(bt_label, &lv_font_unscii_8, 0);
-#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
     lv_label_set_text(bt_label, "BT: [-- OFF --]");
-#else
-    lv_label_set_text(bt_label, "BT: [CENTRAL ]");
-#endif
     lv_obj_set_pos(bt_label, 0, 30);
 
     side_label = lv_label_create(scr);
@@ -80,7 +78,7 @@ lv_obj_t *zmk_display_status_screen(void) {
     return scr;
 }
 
-#if IS_ENABLED(CONFIG_ZMK_SPLIT_BLE_PERIPHERAL)
+#if IS_PERIPHERAL
 static int bt_handler(const zmk_event_t *eh) {
     bool conn = zmk_split_bt_peripheral_is_connected();
     lv_label_set_text(bt_label, conn ? "BT: [CONN  OK]" : "BT: [-- OFF --]");
