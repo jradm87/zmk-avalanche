@@ -1,10 +1,12 @@
 #include <zephyr/kernel.h>
-#include <zephyr/random/random.h>
+#include <string.h>
 #include <zephyr/logging/log.h>
 #include <lvgl.h>
 #include <zmk/display.h>
 #include <zmk/keymap.h>
 #include <zmk/events/layer_state_changed.h>
+#include <zmk/events/keycode_state_changed.h>
+#include <zmk/events/position_state_changed.h>
 #include <zmk/event_manager.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -13,21 +15,27 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #define RAIN_COLS 16
 #define RAIN_ROWS 4
 
-/* Scanner bar: 14 slots inside brackets = "[" + 14 chars + "]" */
-#define BAR_LEN 14
 
 static lv_obj_t *rain_label;
 static lv_obj_t *layer_label;
-static lv_obj_t *bar_label;
+static lv_obj_t *recv_label;
 static bool cursor_vis = true;
+static uint8_t recv_step = 0;
 
 static const char *const layer_names[] = {
     "BASE", "CONFIG", "SYS", "GAMING", "---"
 };
 #define NUM_LAYERS ARRAY_SIZE(layer_names)
 
-static const char charset[] = "01|/\\+-=><01";
-#define CHARSET_LEN (sizeof(charset) - 1)
+#define IDLE_CHAR '.'
+
+/* ------------------------------------------------------------------ */
+/*  Scroll buffer — hex dos keycodes scrollando da direita pra esq.   */
+/* ------------------------------------------------------------------ */
+#define HEX_BUF (RAIN_ROWS * RAIN_COLS)   /* 64 chars = 4 linhas × 16 */
+static char hex_buf[HEX_BUF];
+
+static const char hexdigits[] = "0123456789ABCDEF";
 
 /* ------------------------------------------------------------------ */
 /*  Layer refresh                                                       */
@@ -47,12 +55,11 @@ static void refresh_layer(void) {
 /*  Matrix rain timer                                                   */
 /* ------------------------------------------------------------------ */
 static void rain_timer_cb(lv_timer_t *t) {
+    /* monta o buf com quebras de linha para exibição */
     static char buf[RAIN_ROWS * (RAIN_COLS + 1) + 1];
     for (int r = 0; r < RAIN_ROWS; r++) {
         for (int c = 0; c < RAIN_COLS; c++) {
-            uint32_t rn = sys_rand32_get();
-            buf[r * (RAIN_COLS + 1) + c] =
-                (rn % 3 == 0) ? charset[rn % CHARSET_LEN] : ' ';
+            buf[r * (RAIN_COLS + 1) + c] = hex_buf[r * RAIN_COLS + c];
         }
         buf[r * (RAIN_COLS + 1) + RAIN_COLS] = '\n';
     }
@@ -69,29 +76,17 @@ static void cursor_timer_cb(lv_timer_t *t) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Scanner bar timer  (text-based: [>>>         ] sweeping L<->R)     */
+/*  Receiving animation (igual ao left/right mas com RECEIVING)        */
 /* ------------------------------------------------------------------ */
-static void bar_timer_cb(lv_timer_t *t) {
-    static int pos = 0;
-    static int dir = 1;
-
-    char buf[BAR_LEN + 3]; /* '[' + BAR_LEN + ']' + '\0' */
-    buf[0] = '[';
-    for (int i = 0; i < BAR_LEN; i++) {
-        int dist = i - pos;
-        if (dist >= 0 && dist < 3) {
-            buf[i + 1] = '>';
-        } else {
-            buf[i + 1] = ' ';
-        }
-    }
-    buf[BAR_LEN + 1] = ']';
-    buf[BAR_LEN + 2] = '\0';
-    lv_label_set_text(bar_label, buf);
-
-    pos += dir;
-    if (pos >= BAR_LEN - 2) dir = -1;
-    if (pos <= 0)            dir =  1;
+static void recv_timer_cb(lv_timer_t *t) {
+    static const char *frames[] = {
+        "<<<RECEIVING>>>",
+        " <<RECEIVING>> ",
+        "  <RECEIVING>  ",
+        " <<RECEIVING>> ",
+    };
+    recv_step = (recv_step + 1) % ARRAY_SIZE(frames);
+    lv_label_set_text(recv_label, frames[recv_step]);
 }
 
 /* ------------------------------------------------------------------ */
@@ -121,19 +116,20 @@ lv_obj_t *zmk_display_status_screen(void) {
     lv_obj_set_pos(layer_label, 2, 38);
     lv_obj_set_style_text_font(layer_label, &lv_font_unscii_8, 0);
 
-    /* Scanner bar at y=54 */
-    bar_label = lv_label_create(scr);
-    lv_obj_set_pos(bar_label, 0, 54);
-    lv_obj_set_style_text_font(bar_label, &lv_font_unscii_8, 0);
+    /* Receiving animation at y=54 */
+    recv_label = lv_label_create(scr);
+    lv_obj_set_pos(recv_label, 0, 54);
+    lv_obj_set_style_text_font(recv_label, &lv_font_unscii_8, 0);
+    lv_label_set_text(recv_label, "<<<RECEIVING>>>");
 
     /* Timers */
-    lv_timer_create(rain_timer_cb,   180, NULL);
-    lv_timer_create(cursor_timer_cb, 500, NULL);
-    lv_timer_create(bar_timer_cb,     60, NULL);
+    lv_timer_create(rain_timer_cb,   300, NULL);
+    lv_timer_create(cursor_timer_cb, 600, NULL);
+    lv_timer_create(recv_timer_cb,   400, NULL);
 
     /* Initial draw */
+    memset(hex_buf, IDLE_CHAR, HEX_BUF);
     rain_timer_cb(NULL);
-    bar_timer_cb(NULL);
     refresh_layer();
 
     return scr;
@@ -149,3 +145,36 @@ static int layer_changed_handler(const zmk_event_t *eh) {
 
 ZMK_LISTENER(avalanche_status_screen, layer_changed_handler);
 ZMK_SUBSCRIPTION(avalanche_status_screen, zmk_layer_state_changed);
+
+/* ------------------------------------------------------------------ */
+/*  ZMK event listener — injeta hex do keycode na rain ao pressionar   */
+/* ------------------------------------------------------------------ */
+static void append_hex(uint8_t hi, uint8_t lo) {
+    /* shift tudo 2 posições pra esquerda, adiciona 2 novos chars no fim */
+    memmove(hex_buf, hex_buf + 2, HEX_BUF - 2);
+    hex_buf[HEX_BUF - 2] = hexdigits[(lo >> 4) & 0xF];
+    hex_buf[HEX_BUF - 1] = hexdigits[lo & 0xF];
+    (void)hi; /* page ignorado por ora — só keycode aparece */
+}
+
+static int key_handler(const zmk_event_t *eh) {
+    const struct zmk_keycode_state_changed *ev = as_zmk_keycode_state_changed(eh);
+    if (!ev || !ev->state) return ZMK_EV_EVENT_BUBBLE;
+    append_hex(ev->usage_page & 0xFF, ev->keycode & 0xFF);
+    return ZMK_EV_EVENT_BUBBLE;
+}
+
+ZMK_LISTENER(avalanche_key_rain, key_handler);
+ZMK_SUBSCRIPTION(avalanche_key_rain, zmk_keycode_state_changed);
+
+/* fallback: position event também injeta (garante que algo aparece) */
+static int pos_handler(const zmk_event_t *eh) {
+    const struct zmk_position_state_changed *ev = as_zmk_position_state_changed(eh);
+    if (!ev || !ev->state) return ZMK_EV_EVENT_BUBBLE;
+    /* fallback: usa posição se keycode não disparar */
+    append_hex(0, (uint8_t)(ev->position & 0xFF));
+    return ZMK_EV_EVENT_BUBBLE;
+}
+
+ZMK_LISTENER(avalanche_pos_rain, pos_handler);
+ZMK_SUBSCRIPTION(avalanche_pos_rain, zmk_position_state_changed);
