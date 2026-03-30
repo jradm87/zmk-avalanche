@@ -6,7 +6,6 @@
 #include <zmk/keymap.h>
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/events/keycode_state_changed.h>
-#include <zmk/events/position_state_changed.h>
 #include <zmk/event_manager.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -34,6 +33,8 @@ static const char *const layer_names[] = {
 /* ------------------------------------------------------------------ */
 #define HEX_BUF (RAIN_ROWS * RAIN_COLS)   /* 64 chars = 4 linhas × 16 */
 static char hex_buf[HEX_BUF];
+static int64_t last_key_ms = 0;
+#define DECAY_AFTER_MS 10000
 
 static const char hexdigits[] = "0123456789ABCDEF";
 
@@ -42,12 +43,8 @@ static const char hexdigits[] = "0123456789ABCDEF";
 /* ------------------------------------------------------------------ */
 static void refresh_layer(void) {
     zmk_keymap_layer_id_t idx = zmk_keymap_highest_layer_active();
-    const char *name = zmk_keymap_layer_name(idx);
-    if (!name || name[0] == '\0') {
-        name = (idx < NUM_LAYERS) ? layer_names[idx] : "???";
-    }
-    char buf[20];
-    snprintf(buf, sizeof(buf), "> %s%s", name, cursor_vis ? "_" : " ");
+    char buf[16];
+    snprintf(buf, sizeof(buf), "Layer: %d", (int)idx);
     lv_label_set_text(layer_label, buf);
 }
 
@@ -55,6 +52,19 @@ static void refresh_layer(void) {
 /*  Matrix rain timer                                                   */
 /* ------------------------------------------------------------------ */
 static void rain_timer_cb(lv_timer_t *t) {
+    /* após 10s sem digitar, vai puxando chars pra esquerda (2 por tick) */
+    if (last_key_ms > 0 && (k_uptime_get() - last_key_ms) > DECAY_AFTER_MS) {
+        memmove(hex_buf, hex_buf + 2, HEX_BUF - 2);
+        hex_buf[HEX_BUF - 2] = IDLE_CHAR;
+        hex_buf[HEX_BUF - 1] = IDLE_CHAR;
+        /* se limpou tudo, para o decay */
+        bool limpo = true;
+        for (int i = 0; i < HEX_BUF; i++) {
+            if (hex_buf[i] != IDLE_CHAR) { limpo = false; break; }
+        }
+        if (limpo) last_key_ms = 0;
+    }
+
     /* monta o buf com quebras de linha para exibição */
     static char buf[RAIN_ROWS * (RAIN_COLS + 1) + 1];
     for (int r = 0; r < RAIN_ROWS; r++) {
@@ -68,10 +78,9 @@ static void rain_timer_cb(lv_timer_t *t) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Cursor blink timer                                                  */
+/*  Layer refresh timer                                                 */
 /* ------------------------------------------------------------------ */
 static void cursor_timer_cb(lv_timer_t *t) {
-    cursor_vis = !cursor_vis;
     refresh_layer();
 }
 
@@ -150,11 +159,13 @@ ZMK_SUBSCRIPTION(avalanche_status_screen, zmk_layer_state_changed);
 /*  ZMK event listener — injeta hex do keycode na rain ao pressionar   */
 /* ------------------------------------------------------------------ */
 static void append_hex(uint8_t hi, uint8_t lo) {
-    /* shift tudo 2 posições pra esquerda, adiciona 2 novos chars no fim */
-    memmove(hex_buf, hex_buf + 2, HEX_BUF - 2);
+    memmove(hex_buf, hex_buf + 4, HEX_BUF - 4);
+    hex_buf[HEX_BUF - 4] = '0';
+    hex_buf[HEX_BUF - 3] = 'x';
     hex_buf[HEX_BUF - 2] = hexdigits[(lo >> 4) & 0xF];
     hex_buf[HEX_BUF - 1] = hexdigits[lo & 0xF];
-    (void)hi; /* page ignorado por ora — só keycode aparece */
+    last_key_ms = k_uptime_get();
+    (void)hi;
 }
 
 static int key_handler(const zmk_event_t *eh) {
@@ -167,14 +178,3 @@ static int key_handler(const zmk_event_t *eh) {
 ZMK_LISTENER(avalanche_key_rain, key_handler);
 ZMK_SUBSCRIPTION(avalanche_key_rain, zmk_keycode_state_changed);
 
-/* fallback: position event também injeta (garante que algo aparece) */
-static int pos_handler(const zmk_event_t *eh) {
-    const struct zmk_position_state_changed *ev = as_zmk_position_state_changed(eh);
-    if (!ev || !ev->state) return ZMK_EV_EVENT_BUBBLE;
-    /* fallback: usa posição se keycode não disparar */
-    append_hex(0, (uint8_t)(ev->position & 0xFF));
-    return ZMK_EV_EVENT_BUBBLE;
-}
-
-ZMK_LISTENER(avalanche_pos_rain, pos_handler);
-ZMK_SUBSCRIPTION(avalanche_pos_rain, zmk_position_state_changed);
