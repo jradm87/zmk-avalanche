@@ -20,11 +20,7 @@ static lv_obj_t *side_label;
 static uint8_t   anim_step = 0;
 
 static void anim_timer_cb(lv_timer_t *t) {
-    /* Poll BT status every 400ms */
-#if IS_PERIPHERAL
-    bool conn = zmk_split_bt_peripheral_is_connected();
-    lv_label_set_text(bt_label, conn ? "BT: [CONN  OK]" : "BT: [-- OFF --]");
-#endif
+    /* BT status is updated by bt_handler() on connection events, not here */
 
     /* Animate side indicator */
 #if IS_ENABLED(CONFIG_SHIELD_AVALANCHE_LEFT)
@@ -73,7 +69,7 @@ lv_obj_t *zmk_display_status_screen(void) {
     lv_label_set_text(side_label, ">>> RIGHT <<<");
 #endif
 
-    lv_timer_create(anim_timer_cb, 400, NULL);
+    lv_timer_create(anim_timer_cb, 600, NULL);
 
     return scr;
 }
