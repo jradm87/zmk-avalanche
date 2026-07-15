@@ -54,5 +54,7 @@
         multiplex-ratio = <63>;
         inversion-on;
         prechargep = <0x22>;
+        segment-remap;
+        com-invdir;
     };
 };
