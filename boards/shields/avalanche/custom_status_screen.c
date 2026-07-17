@@ -5,9 +5,11 @@
 #include <zmk/keymap.h>
 #include <zmk/hid_indicators.h>
 #include <dt-bindings/zmk/hid_usage.h>
+#include <zmk/usb.h>
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/events/battery_state_changed.h>
 #include <zmk/events/hid_indicators_changed.h>
+#include <zmk/events/usb_conn_state_changed.h>
 #include <zmk/event_manager.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
@@ -30,6 +32,7 @@ static lv_obj_t *battery_label;
 static lv_obj_t *conn_label;
 static lv_obj_t *caps_bg;
 static lv_obj_t *caps_label;
+static lv_obj_t *usb_label;
 
 /* ------------------------------------------------------------------ */
 /*  Layer refresh                                                       */
@@ -79,6 +82,13 @@ static void conn_timer_cb(lv_timer_t *t) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  USB status — enumerated as HID vs power-only                        */
+/* ------------------------------------------------------------------ */
+static void refresh_usb(enum zmk_usb_conn_state state) {
+    lv_label_set_text(usb_label, state == ZMK_USB_CONN_HID ? "USB: HID" : "USB: PWR");
+}
+
+/* ------------------------------------------------------------------ */
 /*  Caps lock refresh — inverted highlight when active                  */
 /* ------------------------------------------------------------------ */
 static void refresh_caps(bool caps_on) {
@@ -117,7 +127,7 @@ lv_obj_t *zmk_display_status_screen(void) {
     /* Caps lock indicator — background rect toggled on/off behind the text */
     caps_bg = lv_obj_create(scr);
     lv_obj_set_size(caps_bg, 72, 10);
-    lv_obj_set_pos(caps_bg, 0, 40);
+    lv_obj_set_pos(caps_bg, 0, 38);
     lv_obj_set_style_border_width(caps_bg, 0, 0);
     lv_obj_set_style_pad_all(caps_bg, 0, 0);
     lv_obj_set_style_bg_color(caps_bg, lv_color_black(), 0);
@@ -132,7 +142,12 @@ lv_obj_t *zmk_display_status_screen(void) {
     /* Connection status */
     conn_label = lv_label_create(scr);
     lv_obj_set_style_text_font(conn_label, &lv_font_unscii_8, 0);
-    lv_obj_set_pos(conn_label, 0, 54);
+    lv_obj_set_pos(conn_label, 0, 48);
+
+    /* USB status */
+    usb_label = lv_label_create(scr);
+    lv_obj_set_style_text_font(usb_label, &lv_font_unscii_8, 0);
+    lv_obj_set_pos(usb_label, 0, 58);
 
     /* Slow timer just to age out stale connection status, no busy polling */
     lv_timer_create(conn_timer_cb, 2000, NULL);
@@ -141,6 +156,7 @@ lv_obj_t *zmk_display_status_screen(void) {
     refresh_layer();
     refresh_conn();
     refresh_caps(zmk_hid_indicators_get_current_profile() & HID_USAGE_LED_CAPS_LOCK);
+    refresh_usb(zmk_usb_get_conn_state());
 
     return scr;
 }
@@ -189,3 +205,18 @@ static int hid_indicators_changed_handler(const zmk_event_t *eh) {
 
 ZMK_LISTENER(avalanche_caps_screen, hid_indicators_changed_handler);
 ZMK_SUBSCRIPTION(avalanche_caps_screen, zmk_hid_indicators_changed);
+
+/* ------------------------------------------------------------------ */
+/*  ZMK event listener — USB connection state (HID vs power-only)       */
+/* ------------------------------------------------------------------ */
+static int usb_conn_state_changed_handler(const zmk_event_t *eh) {
+    const struct zmk_usb_conn_state_changed *ev = as_zmk_usb_conn_state_changed(eh);
+    if (!ev) {
+        return ZMK_EV_EVENT_BUBBLE;
+    }
+    refresh_usb(ev->conn_state);
+    return ZMK_EV_EVENT_BUBBLE;
+}
+
+ZMK_LISTENER(avalanche_usb_screen, usb_conn_state_changed_handler);
+ZMK_SUBSCRIPTION(avalanche_usb_screen, zmk_usb_conn_state_changed);
