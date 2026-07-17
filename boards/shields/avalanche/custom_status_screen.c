@@ -22,14 +22,11 @@ static const char *const layer_names[] = {
 /* battery state per peripheral: 0 = left, 1 = right */
 #define NUM_SIDES 2
 #define BATTERY_UNKNOWN 0xFF
-#define STALE_AFTER_MS (6 * 60 * 1000) /* battery reports every 300s, give 2x margin */
 
 static uint8_t bat_pct[NUM_SIDES] = {BATTERY_UNKNOWN, BATTERY_UNKNOWN};
-static int64_t bat_seen_ms[NUM_SIDES] = {0, 0};
 
 static lv_obj_t *layer_label;
 static lv_obj_t *battery_label;
-static lv_obj_t *conn_label;
 static lv_obj_t *caps_bg;
 static lv_obj_t *caps_label;
 static lv_obj_t *usb_label;
@@ -63,22 +60,6 @@ static void refresh_battery(void) {
     char buf[24];
     snprintf(buf, sizeof(buf), "%s   %s", l, r);
     lv_label_set_text(battery_label, buf);
-}
-
-/* ------------------------------------------------------------------ */
-/*  Connection status — derived from battery report freshness           */
-/* ------------------------------------------------------------------ */
-static void refresh_conn(void) {
-    int64_t now = k_uptime_get();
-    bool left_ok = bat_seen_ms[0] != 0 && (now - bat_seen_ms[0]) < STALE_AFTER_MS;
-    bool right_ok = bat_seen_ms[1] != 0 && (now - bat_seen_ms[1]) < STALE_AFTER_MS;
-    char buf[24];
-    snprintf(buf, sizeof(buf), "L:%s R:%s", left_ok ? "OK" : "--", right_ok ? "OK" : "--");
-    lv_label_set_text(conn_label, buf);
-}
-
-static void conn_timer_cb(lv_timer_t *t) {
-    refresh_conn();
 }
 
 /* ------------------------------------------------------------------ */
@@ -139,22 +120,13 @@ lv_obj_t *zmk_display_status_screen(void) {
     lv_label_set_text(caps_label, "CAPS LOCK");
     lv_obj_align(caps_label, LV_ALIGN_LEFT_MID, 0, 0);
 
-    /* Connection status */
-    conn_label = lv_label_create(scr);
-    lv_obj_set_style_text_font(conn_label, &lv_font_unscii_8, 0);
-    lv_obj_set_pos(conn_label, 0, 48);
-
     /* USB status */
     usb_label = lv_label_create(scr);
     lv_obj_set_style_text_font(usb_label, &lv_font_unscii_8, 0);
-    lv_obj_set_pos(usb_label, 0, 58);
-
-    /* Slow timer just to age out stale connection status, no busy polling */
-    lv_timer_create(conn_timer_cb, 2000, NULL);
+    lv_obj_set_pos(usb_label, 0, 50);
 
     refresh_battery();
     refresh_layer();
-    refresh_conn();
     refresh_caps(zmk_hid_indicators_get_current_profile() & HID_USAGE_LED_CAPS_LOCK);
     refresh_usb(zmk_usb_get_conn_state());
 
@@ -182,9 +154,7 @@ static int battery_changed_handler(const zmk_event_t *eh) {
         return ZMK_EV_EVENT_BUBBLE;
     }
     bat_pct[ev->source] = ev->state_of_charge;
-    bat_seen_ms[ev->source] = k_uptime_get();
     refresh_battery();
-    refresh_conn();
     return ZMK_EV_EVENT_BUBBLE;
 }
 
