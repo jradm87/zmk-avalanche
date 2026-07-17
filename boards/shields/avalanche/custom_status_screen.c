@@ -64,9 +64,14 @@ static void refresh_battery(void) {
 
 /* ------------------------------------------------------------------ */
 /*  USB status — enumerated as HID vs power-only                        */
+/*  zmk_usb_get_conn_state() alone is not enough: it also reports HID   */
+/*  for USB_DC_SUSPEND/RESUME/SOF, which a power-only source (power     */
+/*  bank, dumb charger) can trigger without a real host ever            */
+/*  enumerating. zmk_usb_is_hid_ready() only latches true once          */
+/*  USB_DC_CONFIGURED actually happened.                                */
 /* ------------------------------------------------------------------ */
-static void refresh_usb(enum zmk_usb_conn_state state) {
-    lv_label_set_text(usb_label, state == ZMK_USB_CONN_HID ? "USB: HID" : "USB: PWR");
+static void refresh_usb(void) {
+    lv_label_set_text(usb_label, zmk_usb_is_hid_ready() ? "USB: HID" : "USB: PWR");
 }
 
 /* ------------------------------------------------------------------ */
@@ -128,7 +133,7 @@ lv_obj_t *zmk_display_status_screen(void) {
     refresh_battery();
     refresh_layer();
     refresh_caps(zmk_hid_indicators_get_current_profile() & HID_USAGE_LED_CAPS_LOCK);
-    refresh_usb(zmk_usb_get_conn_state());
+    refresh_usb();
 
     return scr;
 }
@@ -184,7 +189,7 @@ static int usb_conn_state_changed_handler(const zmk_event_t *eh) {
     if (!ev) {
         return ZMK_EV_EVENT_BUBBLE;
     }
-    refresh_usb(ev->conn_state);
+    refresh_usb();
     return ZMK_EV_EVENT_BUBBLE;
 }
 
