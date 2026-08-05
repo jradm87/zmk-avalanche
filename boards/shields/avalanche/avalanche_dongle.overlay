@@ -33,9 +33,34 @@
         transform = <&default_transform>;
     };
 
+    /* Dongle has no physical encoders, but as the split central it must
+     * still declare 2 sensor slots (matching left_encoder/right_encoder
+     * in avalanche.dtsi) so it accepts sensor_index 0/1 forwarded over
+     * BLE from the peripherals. Without this, ZMK_KEYMAP_SENSORS_LEN is
+     * 0 here and every rotation event from left/right gets dropped as
+     * out-of-range. status = "disabled" is fine: these config nodes are
+     * only used for their steps/triggers-per-rotation properties, not
+     * as real devices (dev resolves to NULL, never read locally).
+     */
+    left_encoder: encoder_left {
+        compatible = "alps,ec11";
+        a-gpios = <&pro_micro 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+        status = "disabled";
+    };
+
+    right_encoder: encoder_right {
+        compatible = "alps,ec11";
+        a-gpios = <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = <&pro_micro 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        steps = <80>;
+        status = "disabled";
+    };
+
     sensors: sensors {
         compatible = "zmk,keymap-sensors";
-        sensors = <>;
+        sensors = <&left_encoder &right_encoder>;
         triggers-per-rotation = <20>;
     };
 };
